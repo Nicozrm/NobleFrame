@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kollektion – LUNARA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header { padding: 140px 60px 60px; text-align: center; background: linear-gradient(135deg, rgba(201,169,166,0.1) 0%, rgba(212,181,168,0.05) 100%); }
+        .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 15px; }
+        .page-subtitle { font-size: 1.1rem; color: var(--charcoal-light); max-width: 600px; margin: 0 auto; }
+        
+        .filter-tabs { display: flex; justify-content: center; gap: 15px; padding: 30px 60px; flex-wrap: wrap; }
+        .filter-tab { padding: 12px 25px; background: transparent; border: 1px solid var(--sand); font-family: 'Outfit', sans-serif; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+        .filter-tab:hover, .filter-tab.active { background: var(--rose); border-color: var(--rose); color: var(--white); }
+        
+        .products-section { padding: 60px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 35px; max-width: 1400px; margin: 0 auto; }
+        
+        .product-card { background: var(--white); border: 1px solid var(--beige); overflow: hidden; transition: all 0.4s ease; position: relative; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-medium); border-color: var(--rose); }
+        .product-image { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform 0.5s ease; }
+        .product-card:hover .product-image { transform: scale(1.05); }
+        .product-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(45,41,38,0.8) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 25px; }
+        .product-card:hover .product-overlay { opacity: 1; }
+        .product-quick-add { width: 100%; padding: 14px; background: var(--rose); color: var(--white); border: none; font-family: 'Outfit', sans-serif; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.3s ease; }
+        .product-quick-add:hover { background: var(--rose-dark); }
+        .product-info { padding: 25px; }
+        .product-category { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); margin-bottom: 8px; }
+        .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; cursor: pointer; transition: color 0.3s ease; }
+        .product-name:hover { color: var(--rose); }
+        .product-rating-preview { display: flex; gap: 5px; margin-bottom: 12px; }
+        .product-rating-preview .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .product-price { font-size: 1.2rem; font-weight: 600; color: var(--rose-dark); }
+        
+        /* Modal */
+        .product-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45,41,38,0.8); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .product-modal.show { display: flex; }
+        .modal-content { background: var(--cream); width: 100%; max-width: 900px; max-height: 90vh; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; }
+        .modal-image { width: 100%; height: 100%; object-fit: cover; }
+        .modal-details { padding: 40px; display: flex; flex-direction: column; }
+        .modal-close { position: absolute; top: 20px; right: 20px; width: 45px; height: 45px; background: var(--white); border: 1px solid var(--sand); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-close svg { width: 20px; height: 20px; stroke: var(--charcoal); }
+        .modal-category { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
+        .modal-name { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; margin-bottom: 15px; }
+        .modal-description { font-size: 0.95rem; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 25px; }
+        .modal-rating { margin-bottom: 25px; }
+        .modal-rating h4 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); margin-bottom: 15px; }
+        .rating-row { display: flex; align-items: center; gap: 15px; padding: 8px 0; border-bottom: 1px solid var(--beige); }
+        .rating-label { font-size: 0.9rem; width: 120px; }
+        .rating-indicator { width: 14px; height: 14px; border-radius: 50%; }
+        
+        /* Services */
+        .modal-services { margin-bottom: 25px; padding: 20px; background: rgba(201,169,166,0.1); border: 1px solid rgba(201,169,166,0.2); }
+        .modal-services h4 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--charcoal-light); margin-bottom: 15px; }
+        .service-option { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(201,169,166,0.2); cursor: pointer; }
+        .service-option:last-child { border-bottom: none; }
+        .service-checkbox { width: 20px; height: 20px; border: 2px solid var(--sand); background: var(--white); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
+        .service-option.selected .service-checkbox { background: var(--rose); border-color: var(--rose); }
+        .service-option.selected .service-checkbox::after { content: '✓'; color: var(--white); font-size: 12px; }
+        .service-info { flex: 1; }
+        .service-name { font-size: 0.95rem; font-weight: 500; }
+        .service-desc { font-size: 0.8rem; color: var(--charcoal-light); }
+        .service-price { font-weight: 600; color: var(--rose-dark); }
+        
+        /* Tip in Modal */
+        .modal-tip { margin-bottom: 25px; padding: 20px; background: linear-gradient(135deg, rgba(212,181,168,0.2) 0%, rgba(201,169,166,0.1) 100%); border: 1px solid rgba(212,181,168,0.4); }
+        .modal-tip h4 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-gold); margin-bottom: 10px; }
+        .modal-tip p { font-size: 0.85rem; color: var(--charcoal-light); margin-bottom: 15px; }
+        .tip-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tip-option { padding: 10px 20px; background: transparent; border: 1px solid var(--rose-gold); color: var(--rose-gold); font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; }
+        .tip-option:hover, .tip-option.selected { background: var(--rose-gold); color: var(--charcoal); }
+        
+        .modal-total { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-top: 2px solid var(--beige); margin-top: auto; }
+        .modal-total-label { font-size: 1rem; }
+        .modal-total-price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--rose-dark); }
+        .modal-add-btn { width: 100%; padding: 18px; background: var(--rose); color: var(--white); border: none; font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; margin-top: 15px; }
+        .modal-add-btn:hover { background: var(--rose-dark); }
+        
+        @media (max-width: 768px) {
+            .modal-content { grid-template-columns: 1fr; }
+            .modal-image { height: 300px; }
+            .page-header, .filter-tabs, .products-section { padding: 30px; }
+            .page-header { padding-top: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-wrapper scrolled" id="navbar">
+        <div class="nav-main">
+            <div class="nav-left">
+                <a href="index.html" class="logo">
+                    <div class="logo-moon"><svg viewBox="0 0 100 100"><path d="M50 10 A40 40 0 1 1 50 90 A25 25 0 1 0 50 10" stroke-linecap="round" fill="none" stroke="#C9A9A6" stroke-width="1.5"/></svg></div>
+                    <span class="logo-text">Lunara</span>
+                </a>
+                <a href="index.html#points" class="points-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span id="userPoints">0 Punkte</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="kollektion.html" style="color:var(--rose)">Kollektion</a></li>
+                <li><a href="merch.html">Merch</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="cart-btn" id="cartBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1 class="page-title">Die <span style="background:var(--gradient-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Kollektion</span></h1>
+        <p class="page-subtitle">Jedes Stück wurde von mir persönlich ausgewählt und bewertet. Wähle deine Favoriten und füge optionale Services hinzu.</p>
+    </header>
+
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">Alle</button>
+        <button class="filter-tab" data-filter="panties">Panties</button>
+        <button class="filter-tab" data-filter="bras">BHs</button>
+        <button class="filter-tab" data-filter="sets">Sets</button>
+        <button class="filter-tab" data-filter="bodys">Bodys</button>
+        <button class="filter-tab" data-filter="socken">Socken</button>
+    </div>
+
+    <section class="products-section">
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Product Modal -->
+    <div class="product-modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            <img src="" alt="" class="modal-image" id="modalImage">
+            <div class="modal-details">
+                <div class="modal-category" id="modalCategory"></div>
+                <h2 class="modal-name" id="modalName"></h2>
+                <p class="modal-description" id="modalDesc"></p>
+                <div class="modal-rating">
+                    <h4>6-Punkte Bewertung</h4>
+                    <div id="modalRating"></div>
+                </div>
+                <div class="modal-services">
+                    <h4>✨ Persönliche Services (optional)</h4>
+                    <div id="modalServices"></div>
+                </div>
+                <div class="modal-tip">
+                    <h4>💝 Trinkgeld (optional)</h4>
+                    <p>Ich melde mich persönlich bei dir!</p>
+                    <div class="tip-options" id="tipOptions">
+                        <button class="tip-option" data-tip="0">Kein Tip</button>
+                        <button class="tip-option" data-tip="5">5€</button>
+                        <button class="tip-option" data-tip="10">10€</button>
+                        <button class="tip-option" data-tip="20">20€</button>
+                    </div>
+                </div>
+                <div class="modal-total">
+                    <span class="modal-total-label">Gesamt:</span>
+                    <span class="modal-total-price" id="modalTotal">0,00 €</span>
+                </div>
+                <button class="modal-add-btn" id="modalAddBtn">In den Warenkorb</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3>Warenkorb</h3><button class="cart-close" id="cartClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Gesamt:</span><span class="cart-total-final" id="cartTotal">0,00 €</span></div>
+            <div class="cart-points-preview" id="cartPointsPreview">Du erhältst <strong>0 Punkte</strong></div>
+            <button class="cart-checkout" id="checkoutBtn">Zur Kasse</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="checkout-header"><h3>Zahlungsart wählen</h3><button class="checkout-close" id="checkoutClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <div class="checkout-body">
+                <div class="checkout-summary"><h4>Bestellübersicht</h4><div class="checkout-total"><span>Gesamtbetrag:</span><span id="checkoutTotal">0,00 €</span></div></div>
+                <div class="payment-methods">
+                    <h4>Zahlungsmethode</h4>
+                    <div class="payment-options">
+                        <div class="payment-option" onclick="processPayment('paypal')"><span>💳 PayPal</span></div>
+                        <div class="payment-option" onclick="processPayment('card')"><span>💳 Kreditkarte</span></div>
+                        <div class="payment-option" onclick="processPayment('sepa')"><span>🏦 SEPA-Überweisung</span></div>
+                        <div class="payment-option" onclick="processPayment('revolut')"><span>📱 Revolut</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="main.js"></script>
+    <script>
+        const products = [
+            { id: 1, name: 'Spitzen-Panty Rosa', category: 'panties', price: 35, image: 'https://images.unsplash.com/photo-1617331140180-e8262094733a?w=500', desc: 'Zartes Spitzen-Panty in romantischem Rosa mit feinen Details.', rating: ['green','green','yellow','green','green','yellow'] },
+            { id: 2, name: 'Satin Slip Schwarz', category: 'panties', price: 40, image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500', desc: 'Eleganter Satin-Slip in klassischem Schwarz.', rating: ['green','yellow','green','green','yellow','green'] },
+            { id: 3, name: 'Push-Up BH Nude', category: 'bras', price: 55, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500', desc: 'Figurschmeichelnder Push-Up BH in natürlichem Nude-Ton.', rating: ['green','green','green','green','green','green'] },
+            { id: 4, name: 'Bralette Bordeaux', category: 'bras', price: 45, image: 'https://images.unsplash.com/photo-1616530940355-351fabd9524b?w=500', desc: 'Bequeme Bralette in verführerischem Bordeaux.', rating: ['yellow','yellow','yellow','green','yellow','yellow'] },
+            { id: 5, name: 'Dessous Set Champagner', category: 'sets', price: 85, image: 'https://images.unsplash.com/photo-1617331140180-e8262094733a?w=500', desc: 'Exklusives 2-teiliges Set in elegantem Champagner.', rating: ['green','green','green','green','green','green'] },
+            { id: 6, name: 'Spitzen Body Schwarz', category: 'bodys', price: 75, image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500', desc: 'Verführerischer Spitzen-Body mit raffinierten Cut-Outs.', rating: ['green','yellow','green','green','green','yellow'] },
+            { id: 7, name: 'Kniestrümpfe Weiß', category: 'socken', price: 25, image: 'https://images.unsplash.com/photo-1582966772680-860e372bb558?w=500', desc: 'Verspielte Kniestrümpfe in reinem Weiß.', rating: ['green','green','yellow','green','yellow','green'] },
+            { id: 8, name: 'Tanga Mint', category: 'panties', price: 30, image: 'https://images.unsplash.com/photo-1617331140180-e8262094733a?w=500', desc: 'Frischer Tanga in zartem Mint.', rating: ['yellow','green','yellow','green','green','yellow'] },
+        ];
+
+        const services = [
+            { name: 'Extra Tragetage (+3 Tage)', price: 15, desc: 'Wird 3 Tage länger getragen' },
+            { name: 'Workout Session', price: 10, desc: 'Wird beim Sport getragen' },
+            { name: 'Schlaf-Nacht', price: 12, desc: 'Wird eine Nacht beim Schlafen getragen' },
+            { name: 'Polaroid Foto', price: 20, desc: 'Persönliches Polaroid inklusive' },
+            { name: 'Handgeschriebene Notiz', price: 5, desc: 'Liebevolle persönliche Nachricht' },
+        ];
+
+        const ratingLabels = ['Zustand', 'Duft', 'Waschstatus', 'Material', 'Tragedauer', 'Extras'];
+        const colorMap = { green: '#7CB77C', yellow: '#E8C547', red: '#C97A7A' };
+
+        let currentProduct = null;
+        let selectedServices = [];
+        let selectedTip = 0;
+
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('productsGrid');
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card" data-id="${p.id}">
+                    <img src="${p.image}" alt="${p.name}" class="product-image">
+                    <div class="product-overlay">
+                        <button class="product-quick-add" onclick="quickAdd(${p.id})">Schnell hinzufügen</button>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${p.category}</div>
+                        <h3 class="product-name" onclick="openModal(${p.id})">${p.name}</h3>
+                        <div class="product-rating-preview">
+                            ${p.rating.map(r => `<span class="dot" style="background:${colorMap[r]}"></span>`).join('')}
+                        </div>
+                        <div class="product-price">${p.price.toFixed(2).replace('.', ',')} €</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            currentProduct = products.find(p => p.id === id);
+            selectedServices = [];
+            selectedTip = 0;
+            
+            document.getElementById('modalImage').src = currentProduct.image;
+            document.getElementById('modalCategory').textContent = currentProduct.category;
+            document.getElementById('modalName').textContent = currentProduct.name;
+            document.getElementById('modalDesc').textContent = currentProduct.desc;
+            
+            document.getElementById('modalRating').innerHTML = ratingLabels.map((label, i) => `
+                <div class="rating-row">
+                    <span class="rating-label">${label}</span>
+                    <span class="rating-indicator" style="background:${colorMap[currentProduct.rating[i]]}"></span>
+                </div>
+            `).join('');
+            
+            document.getElementById('modalServices').innerHTML = services.map((s, i) => `
+                <div class="service-option" data-index="${i}" onclick="toggleService(${i})">
+                    <div class="service-checkbox"></div>
+                    <div class="service-info">
+                        <div class="service-name">${s.name}</div>
+                        <div class="service-desc">${s.desc}</div>
+                    </div>
+                    <div class="service-price">+${s.price}€</div>
+                </div>
+            `).join('');
+            
+            document.querySelectorAll('.tip-option').forEach(btn => {
+                btn.classList.toggle('selected', parseInt(btn.dataset.tip) === 0);
+            });
+            
+            updateModalTotal();
+            document.getElementById('productModal').classList.add('show');
+        }
+
+        function toggleService(index) {
+            const el = document.querySelector(`.service-option[data-index="${index}"]`);
+            if (selectedServices.includes(index)) {
+                selectedServices = selectedServices.filter(i => i !== index);
+                el.classList.remove('selected');
+            } else {
+                selectedServices.push(index);
+                el.classList.add('selected');
+            }
+            updateModalTotal();
+        }
+
+        document.querySelectorAll('.tip-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tip-option').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTip = parseInt(btn.dataset.tip);
+                updateModalTotal();
+            });
+        });
+
+        function updateModalTotal() {
+            const serviceTotal = selectedServices.reduce((sum, i) => sum + services[i].price, 0);
+            const total = currentProduct.price + serviceTotal + selectedTip;
+            document.getElementById('modalTotal').textContent = total.toFixed(2).replace('.', ',') + ' €';
+        }
+
+        document.getElementById('modalAddBtn').addEventListener('click', () => {
+            const serviceNames = selectedServices.map(i => services[i].name);
+            const serviceTotal = selectedServices.reduce((sum, i) => sum + services[i].price, 0);
+            addToCart({
+                id: currentProduct.id,
+                name: currentProduct.name,
+                price: currentProduct.price,
+                image: currentProduct.image,
+                services: serviceNames,
+                servicesTotal: serviceTotal,
+                tip: selectedTip
+            });
+            document.getElementById('productModal').classList.remove('show');
+        });
+
+        function quickAdd(id) {
+            const p = products.find(x => x.id === id);
+            addToCart({ id: p.id, name: p.name, price: p.price, image: p.image, services: [], servicesTotal: 0, tip: 0 });
+        }
+
+        document.getElementById('modalClose').addEventListener('click', () => {
+            document.getElementById('productModal').classList.remove('show');
+        });
+        document.getElementById('productModal').addEventListener('click', (e) => {
+            if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('show');
+        });
+
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderProducts(tab.dataset.filter);
+            });
+        });
+
+        renderProducts();
+    </script>
+</body>
+</html>

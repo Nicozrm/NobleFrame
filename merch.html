@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchandise – LUNARA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-header { padding: 140px 60px 60px; text-align: center; background: linear-gradient(135deg, rgba(201,169,166,0.1) 0%, rgba(212,181,168,0.05) 100%); }
+        .page-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 15px; }
+        .page-subtitle { font-size: 1.1rem; color: var(--charcoal-light); max-width: 600px; margin: 0 auto; }
+        
+        .merch-section { padding: 80px 60px; max-width: 1200px; margin: 0 auto; }
+        .merch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; }
+        
+        .merch-card { background: var(--white); border: 1px solid var(--beige); overflow: hidden; transition: all 0.5s ease; }
+        .merch-card:hover { transform: translateY(-15px); box-shadow: var(--shadow-medium); border-color: var(--rose); }
+        
+        .merch-image-wrap { position: relative; overflow: hidden; background: var(--cream); padding: 40px; display: flex; align-items: center; justify-content: center; }
+        .merch-image { max-width: 100%; max-height: 400px; object-fit: contain; transition: transform 0.6s ease; }
+        .merch-card:hover .merch-image { transform: scale(1.08) rotate(2deg); }
+        
+        .merch-badge { position: absolute; top: 20px; left: 20px; padding: 8px 16px; background: var(--rose); color: var(--white); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+        
+        .merch-info { padding: 35px; }
+        .merch-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 12px; }
+        .merch-desc { font-size: 0.95rem; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 20px; }
+        
+        .merch-features { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .merch-feature { padding: 8px 15px; background: rgba(201,169,166,0.1); border: 1px solid rgba(201,169,166,0.2); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .merch-feature svg { width: 14px; height: 14px; stroke: var(--rose); }
+        
+        .merch-price-row { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--beige); }
+        .merch-price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--rose-dark); }
+        .merch-add { padding: 14px 30px; background: var(--rose); color: var(--white); border: none; font-family: 'Outfit', sans-serif; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+        .merch-add:hover { background: var(--rose-dark); transform: translateX(5px); }
+        
+        @media (max-width: 768px) {
+            .merch-grid { grid-template-columns: 1fr; }
+            .page-header, .merch-section { padding: 30px; }
+            .page-header { padding-top: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-wrapper scrolled" id="navbar">
+        <div class="nav-main">
+            <div class="nav-left">
+                <a href="index.html" class="logo">
+                    <div class="logo-moon"><svg viewBox="0 0 100 100"><path d="M50 10 A40 40 0 1 1 50 90 A25 25 0 1 0 50 10" stroke-linecap="round" fill="none" stroke="#C9A9A6" stroke-width="1.5"/></svg></div>
+                    <span class="logo-text">Lunara</span>
+                </a>
+                <a href="index.html#points" class="points-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <span>0 Punkte</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="kollektion.html">Kollektion</a></li>
+                <li><a href="merch.html" style="color:var(--rose)">Merch</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="cart-btn" id="cartBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/></svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1 class="page-title">LUNARA <span style="background:var(--gradient-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Merchandise</span></h1>
+        <p class="page-subtitle">Exklusive LUNARA Artikel – designed mit Liebe zum Detail. Hochwertige Materialien, einzigartiges Design.</p>
+    </header>
+
+    <section class="merch-section">
+        <div class="merch-grid">
+            <!-- T-Shirt -->
+            <div class="merch-card">
+                <div class="merch-image-wrap">
+                    <span class="merch-badge">Neu</span>
+                    <img src="images/Tshirt.png" alt="LUNARA T-Shirt" class="merch-image">
+                </div>
+                <div class="merch-info">
+                    <h3 class="merch-name">LUNARA Signature T-Shirt</h3>
+                    <p class="merch-desc">Premium Baumwoll-Shirt mit dezent besticktem LUNARA Logo. Oversized Fit für maximalen Komfort. Das perfekte Statement-Piece für echte Fans.</p>
+                    <div class="merch-features">
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>100% Baumwolle</span>
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Oversized Fit</span>
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Bestickt</span>
+                    </div>
+                    <div class="merch-price-row">
+                        <span class="merch-price">39,00 €</span>
+                        <button class="merch-add" onclick="addMerch('LUNARA Signature T-Shirt', 39, 'images/Tshirt.png')">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Socken -->
+            <div class="merch-card">
+                <div class="merch-image-wrap">
+                    <span class="merch-badge">Limitiert</span>
+                    <img src="images/Socken.png" alt="LUNARA Socken" class="merch-image">
+                </div>
+                <div class="merch-info">
+                    <h3 class="merch-name">LUNARA Cozy Socken</h3>
+                    <p class="merch-desc">Kuschelig weiche Socken mit eingesticktem LUNARA Mond-Logo. Perfekt für gemütliche Abende oder als besonderes Geschenk.</p>
+                    <div class="merch-features">
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Super weich</span>
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>One Size</span>
+                        <span class="merch-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>2er Pack</span>
+                    </div>
+                    <div class="merch-price-row">
+                        <span class="merch-price">24,00 €</span>
+                        <button class="merch-add" onclick="addMerch('LUNARA Cozy Socken', 24, 'images/Socken.png')">In den Warenkorb</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header"><h3>Warenkorb</h3><button class="cart-close" id="cartClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Gesamt:</span><span class="cart-total-final" id="cartTotal">0,00 €</span></div>
+            <div class="cart-points-preview" id="cartPointsPreview">Du erhältst <strong>0 Punkte</strong></div>
+            <button class="cart-checkout" id="checkoutBtn">Zur Kasse</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="checkout-header"><h3>Zahlungsart wählen</h3><button class="checkout-close" id="checkoutClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+            <div class="checkout-body">
+                <div class="checkout-summary"><h4>Bestellübersicht</h4><div class="checkout-total"><span>Gesamtbetrag:</span><span id="checkoutTotal">0,00 €</span></div></div>
+                <div class="payment-methods">
+                    <h4>Zahlungsmethode</h4>
+                    <div class="payment-options">
+                        <div class="payment-option" onclick="processPayment('paypal')"><span>💳 PayPal</span></div>
+                        <div class="payment-option" onclick="processPayment('card')"><span>💳 Kreditkarte</span></div>
+                        <div class="payment-option" onclick="processPayment('sepa')"><span>🏦 SEPA-Überweisung</span></div>
+                        <div class="payment-option" onclick="processPayment('revolut')"><span>📱 Revolut</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="main.js"></script>
+    <script>
+        function addMerch(name, price, image) {
+            addToCart({ name, price, image, services: [], servicesTotal: 0, tip: 0 });
+        }
+    </script>
+</body>
+</html>

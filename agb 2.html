@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGB — Lunara</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23F8F6F3' stroke='%23D4A5A5' stroke-width='1'/%3E%3Cpath d='M16 6 L16 26 M11 11 Q16 16 11 21 M21 11 Q16 16 21 21' stroke='%23D4A5A5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg-primary: #FAF8F5;
+            --bg-secondary: #F5F2ED;
+            --bg-tertiary: #EDE8E0;
+            --text-primary: #2D2926;
+            --text-secondary: #5A5550;
+            --text-muted: #8A847D;
+            --rose: #D4A5A5;
+            --rose-light: #E8C4C4;
+            --rose-dark: #B88A8A;
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Montserrat', -apple-system, sans-serif;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+        
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+        
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .nav-logo-text {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+        
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border: 1px solid var(--bg-tertiary);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-back:hover {
+            border-color: var(--rose);
+            color: var(--rose-dark);
+        }
+        
+        .nav-back svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Main Content */
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 140px 2rem 80px;
+        }
+        
+        .legal-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+        
+        .legal-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .legal-header h1 span {
+            color: var(--rose);
+            font-style: italic;
+        }
+        
+        .legal-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .legal-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .legal-section h2 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--rose-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+        
+        .legal-section h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+        
+        .legal-section p, .legal-section li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .legal-section ul, .legal-section ol {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .legal-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .legal-section a {
+            color: var(--rose-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .legal-section a:hover {
+            color: var(--rose);
+            text-decoration: underline;
+        }
+        
+        .info-box {
+            padding: 1rem 1.5rem;
+            background: rgba(212, 165, 165, 0.1);
+            border-left: 3px solid var(--rose);
+            margin: 1.5rem 0;
+        }
+        
+        .info-box p {
+            margin-bottom: 0;
+        }
+        
+        /* Footer */
+        .footer-mini {
+            padding: 2rem;
+            border-top: 1px solid var(--bg-tertiary);
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-mini p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .footer-mini a {
+            color: var(--rose);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-mini a:hover {
+            color: var(--rose-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .nav { padding: 1rem; }
+            .legal-container { padding: 120px 1rem 60px; }
+            .nav-logo-text { font-size: 1.2rem; letter-spacing: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <svg class="nav-logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#D4A5A5" stroke-width="2"/>
+                <path d="M50 15 L50 85" stroke="#D4A5A5" stroke-width="2" fill="none"/>
+                <path d="M30 30 Q50 50 30 70" stroke="#D4A5A5" stroke-width="2" fill="none"/>
+                <path d="M70 30 Q50 50 70 70" stroke="#D4A5A5" stroke-width="2" fill="none"/>
+            </svg>
+            <span class="nav-logo-text">Lunara</span>
+        </a>
+        <a href="index.html" class="nav-back">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Zurück zur Website
+        </a>
+    </div>
+</nav>
+
+<div class="legal-container">
+    <header class="legal-header">
+        <h1>Allgemeine <span>Geschäftsbedingungen</span></h1>
+        <p>Stand: Januar 2025</p>
+    </header>
+
+    <section class="legal-section">
+        <h2>§ 1 Geltungsbereich</h2>
+        <p>(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen Lunara (Jaquelin Handt), Albertstraße 20, 48282 Emsdetten (nachfolgend "Anbieterin") und dem jeweiligen Kunden.</p>
+        <p>(2) Abweichende Bedingungen des Kunden werden nicht anerkannt, es sei denn, die Anbieterin stimmt ihrer Geltung ausdrücklich schriftlich zu.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 2 Vertragsgegenstand</h2>
+        <p>(1) Die Anbieterin bietet kuratierte Intimprodukte zum Verkauf an.</p>
+        <p>(2) Der genaue Leistungsumfang ergibt sich aus der jeweiligen Produktbeschreibung bzw. individuellen Vereinbarung.</p>
+        <p>(3) Alle angebotenen Produkte sind ausschließlich für volljährige Personen (ab 18 Jahren) bestimmt.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 3 Vertragsschluss</h2>
+        <p>(1) Die Darstellung der Produkte auf der Website stellt kein rechtlich bindendes Angebot dar.</p>
+        <p>(2) Der Vertrag kommt durch Annahme der Bestellung durch die Anbieterin zustande, die per E-Mail bestätigt wird.</p>
+        <p>(3) Die Anbieterin behält sich das Recht vor, Bestellungen ohne Angabe von Gründen abzulehnen.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 4 Preise und Zahlung</h2>
+        <p>(1) Es gelten die zum Zeitpunkt der Bestellung angegebenen Preise.</p>
+        <p>(2) Alle Preise verstehen sich inklusive der gesetzlichen Mehrwertsteuer.</p>
+        <p>(3) Sofern nicht anders vereinbart, erfolgt die Zahlung per Vorkasse oder nach individueller Absprache.</p>
+        <div class="info-box">
+            <p><strong>Hinweis:</strong> Auf Kontoauszügen erscheint ein neutraler Verwendungszweck, um Ihre Diskretion zu wahren.</p>
+        </div>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 5 Lieferung und Versand</h2>
+        <p>(1) Die Lieferung erfolgt an die vom Kunden angegebene Lieferadresse.</p>
+        <p>(2) Der Versand erfolgt diskret und in neutraler Verpackung ohne Hinweise auf den Inhalt oder den Absender.</p>
+        <p>(3) Die Lieferzeit beträgt in der Regel 3-7 Werktage nach Zahlungseingang.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 6 Widerrufsrecht und Rückgabe</h2>
+        <p>(1) <strong>Ausschluss des Widerrufsrechts:</strong> Das Widerrufsrecht besteht nicht bei Verträgen zur Lieferung versiegelter Waren, die aus Gründen des Gesundheitsschutzes oder der Hygiene nicht zur Rückgabe geeignet sind, wenn ihre Versiegelung nach der Lieferung entfernt wurde (§ 312g Abs. 2 Nr. 3 BGB).</p>
+        <p>(2) Aufgrund der Natur der angebotenen Produkte sind Rückgaben aus Hygienegründen grundsätzlich ausgeschlossen.</p>
+        <div class="info-box">
+            <p><strong>Hinweis:</strong> Alle Produkte werden vor dem Versand sorgfältig auf Qualität und Unversehrtheit geprüft.</p>
+        </div>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 7 Gewährleistung</h2>
+        <p>(1) Es gelten die gesetzlichen Gewährleistungsrechte.</p>
+        <p>(2) Mängel sind unverzüglich nach Entdeckung per E-Mail zu melden.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 8 Haftung</h2>
+        <p>(1) Die Anbieterin haftet unbeschränkt für Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit.</p>
+        <p>(2) Für sonstige Schäden haftet die Anbieterin nur bei Vorsatz oder grober Fahrlässigkeit.</p>
+        <p>(3) Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen, soweit keine wesentlichen Vertragspflichten verletzt werden.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 9 Datenschutz</h2>
+        <p>(1) Die Anbieterin verpflichtet sich zur Wahrung der Vertraulichkeit und zum Schutz der personenbezogenen Daten des Kunden.</p>
+        <p>(2) Details zur Datenverarbeitung finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+    </section>
+
+    <section class="legal-section">
+        <h2>§ 10 Schlussbestimmungen</h2>
+        <p>(1) Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.</p>
+        <p>(2) Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+        <p>(3) Die unwirksame Bestimmung ist durch eine wirksame zu ersetzen, die dem wirtschaftlichen Zweck am nächsten kommt.</p>
+    </section>
+
+    <footer class="footer-mini">
+        <p>© 2025 Lunara | <a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a> | <a href="agb.html">AGB</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
