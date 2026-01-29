@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LUNARA Rewards - Sammle Punkte und schalte exklusive Vorteile frei. Von Mondlicht bis Supernova VIP.">
+    <title>LUNARA Rewards – Exklusives Treueprogramm</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .rewards-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(var(--nav-height) + 3rem) 1.5rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rewards-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(209, 159, 174, 0.15) 0%, transparent 60%);
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .your-status {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .your-status-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .your-tier-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--tier-color, var(--color-accent)), rgba(255,255,255,0.1));
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .your-status-info h2 {
+            margin: 0 0 0.25rem;
+            font-size: 2rem;
+        }
+
+        .your-status-info p {
+            margin: 0;
+            color: var(--color-muted);
+        }
+
+        .points-display {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--color-surface-alt);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .points-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            line-height: 1;
+        }
+
+        .points-label {
+            font-size: 1rem;
+            color: var(--color-muted);
+            margin-top: 0.5rem;
+        }
+
+        .tier-full {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--tier-color, var(--glass-border));
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .tier-full::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--tier-color, var(--color-accent));
+        }
+
+        .tier-full:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 80px var(--tier-glow, transparent);
+        }
+
+        .tier-full.mondlicht {
+            --tier-color: #c0c0c0;
+            --tier-glow: rgba(192, 192, 192, 0.2);
+        }
+
+        .tier-full.sternenlicht {
+            --tier-color: #ffd700;
+            --tier-glow: rgba(255, 215, 0, 0.2);
+        }
+
+        .tier-full.galaxie {
+            --tier-color: #9b59b6;
+            --tier-glow: rgba(155, 89, 182, 0.2);
+        }
+
+        .tier-full.supernova {
+            --tier-color: #ff6b35;
+            --tier-glow: rgba(255, 107, 53, 0.3);
+            border-width: 3px;
+        }
+
+        .tier-full .tier-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            font-size: 4rem;
+        }
+
+        .tier-full .tier-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-full .tier-points {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tier-full .tier-benefits {
+            text-align: left;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .tier-full .tier-benefits li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .tier-full .tier-benefits li:last-child {
+            border-bottom: none;
+        }
+
+        .multiplier-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--tier-color), rgba(255,255,255,0.1));
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            margin-top: 1.5rem;
+            color: var(--color-bg);
+        }
+
+        .how-it-works {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        .earn-points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .earn-card {
+            background: var(--color-surface-alt);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .earn-card:hover {
+            transform: translateX(10px);
+            background: var(--color-surface-elevated);
+        }
+
+        .earn-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .earn-info h4 {
+            margin: 0 0 0.25rem;
+            font-size: 1rem;
+        }
+
+        .earn-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--color-muted);
+        }
+
+        .earn-points {
+            margin-left: auto;
+            font-weight: 700;
+            color: var(--color-accent);
+            font-size: 1.1rem;
+        }
+
+        .redeem-section {
+            margin-top: 4rem;
+        }
+
+        .redeem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .redeem-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .redeem-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-5px);
+        }
+
+        .redeem-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .redeem-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .redeem-card h4 {
+            margin: 0 0 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .redeem-card .points-cost {
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .faq-section {
+            margin-top: 4rem;
+        }
+
+        .faq-item {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-question:hover {
+            background: var(--color-surface-alt);
+        }
+
+        .faq-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            color: var(--color-text-soft);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo"><a href="index.html">LUNARA</a></div>
+        <div class="nav-toggle" id="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul id="nav-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#kollektion">Kollektion</a></li>
+            <li><a href="index.html#qualität">Qualität</a></li>
+            <li><a href="rewards.html" class="active">Rewards</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li>
+                <button class="btn-secondary" id="cart-button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                        <path d="m1 1 4 4h14l-1.5 9H7.5"/>
+                    </svg>
+                    <span class="cart-count">0</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Rewards Hero -->
+    <section class="rewards-hero">
+        <div class="hero-particles"></div>
+        <div class="hero-content">
+            <h1 class="reveal">LUNARA <span>Rewards</span></h1>
+            <p class="reveal">Sammle Punkte bei jedem Einkauf und schalte exklusive Vorteile frei. Von Mondlicht bis Supernova VIP – deine Reise beginnt hier.</p>
+        </div>
+    </section>
+
+    <!-- Your Status -->
+    <section class="section">
+        <div class="container">
+            <div class="your-status reveal">
+                <div class="your-status-header">
+                    <div class="your-tier-icon" data-rewards-tier-icon>🌙</div>
+                    <div class="your-status-info">
+                        <h2>Dein Status: <span data-rewards-tier>Mondlicht</span></h2>
+                        <p data-rewards-points-to-next>Noch 200 Punkte bis Sternenlicht</p>
+                    </div>
+                </div>
+
+                <div class="points-display">
+                    <div class="points-number" data-rewards-points>50</div>
+                    <div class="points-label">Punkte gesammelt</div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-rewards-progress style="width: 25%;"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>Mondlicht</span>
+                        <span>Sternenlicht</span>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 1.5rem;">
+                    <a href="index.html#kollektion" class="btn">Jetzt Punkte sammeln</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Tiers -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2 class="reveal">Alle Stufen & Benefits</h2>
+                <p class="reveal" style="max-width: 600px; margin: 0 auto;">Je mehr Punkte du sammelst, desto mehr exklusive Vorteile erwarten dich.</p>
+            </div>
+
+            <div class="grid grid-2" style="gap: 2.5rem;">
+                <!-- Mondlicht -->
+                <div class="tier-full mondlicht reveal">
+                    <div class="tier-icon">🌙</div>
+                    <h3 class="tier-name" style="color: #c0c0c0;">Mondlicht</h3>
+                    <p class="tier-points">0 - 199 Punkte</p>
+                    <ul class="tier-benefits">
+                        <li>5% Willkommensrabatt auf erste Bestellung</li>
+                        <li>Exklusive Newsletter mit Insider-Infos</li>
+                        <li>Geburtstags-Überraschung (100 Bonus-Punkte)</li>
+                        <li>Early Access Benachrichtigungen</li>
+                        <li>Zugang zur LUNARA Community</li>
+                    </ul>
+                    <div class="multiplier-badge">1x Punkte-Multiplikator</div>
+                </div>
+
+                <!-- Sternenlicht -->
+                <div class="tier-full sternenlicht reveal">
+                    <div class="tier-icon">⭐</div>
+                    <h3 class="tier-name" style="color: #ffd700;">Sternenlicht</h3>
+                    <p class="tier-points">200 - 499 Punkte</p>
+                    <ul class="tier-benefits">
+                        <li>Alle Mondlicht-Vorteile</li>
+                        <li>10% Rabatt auf alle Bestellungen</li>
+                        <li>Kostenloser Versand ab 75€</li>
+                        <li>Zugang zu exklusiven Sternenlicht-Produkten</li>
+                        <li>Priority Kundensupport</li>
+                        <li>48h Early Access bei neuen Drops</li>
+                    </ul>
+                    <div class="multiplier-badge">1.25x Punkte-Multiplikator</div>
+                </div>
+
+                <!-- Galaxie -->
+                <div class="tier-full galaxie reveal">
+                    <div class="tier-icon">🌌</div>
+                    <h3 class="tier-name" style="color: #9b59b6;">Galaxie</h3>
+                    <p class="tier-points">500 - 999 Punkte</p>
+                    <ul class="tier-benefits">
+                        <li>Alle Sternenlicht-Vorteile</li>
+                        <li>15% Rabatt auf alle Bestellungen</li>
+                        <li>Kostenloser Express-Versand (immer)</li>
+                        <li>Exklusive Galaxie-Kollektion</li>
+                        <li>Persönliche Styling-Beratung (1x monatlich)</li>
+                        <li>Preview neuer Kollektionen vor allen anderen</li>
+                        <li>Jährliches Galaxie-Geschenkset</li>
+                    </ul>
+                    <div class="multiplier-badge">1.5x Punkte-Multiplikator</div>
+                </div>
+
+                <!-- Supernova -->
+                <div class="tier-full supernova reveal">
+                    <div class="tier-icon">💫</div>
+                    <h3 class="tier-name" style="color: #ff6b35;">Supernova <span class="supernova-badge">VIP</span></h3>
+                    <p class="tier-points">1000+ Punkte</p>
+                    <ul class="tier-benefits">
+                        <li>Alle Galaxie-Vorteile</li>
+                        <li>20% VIP-Rabatt permanent</li>
+                        <li>Kostenloser Premium-Versand weltweit</li>
+                        <li>Zugang zum geheimen VIP-Cabinet</li>
+                        <li>Limitierte Supernova-Editionen (exklusiv)</li>
+                        <li>Einladungen zu exklusiven LUNARA Events</li>
+                        <li>Persönlicher VIP-Concierge Service</li>
+                        <li>Jährliches Luxus-Geschenkpaket (Wert: 200€+)</li>
+                        <li>Mitgestaltung zukünftiger Kollektionen</li>
+                    </ul>
+                    <div class="multiplier-badge">2x Punkte-Multiplikator</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Earn Points -->
+    <section class="section">
+        <div class="container">
+            <div class="how-it-works reveal">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>So sammelst du Punkte</h2>
+                    <p style="color: var(--color-muted);">Es gibt viele Wege, deine Punkte zu vermehren</p>
+                </div>
+
+                <div class="earn-points-grid">
+                    <div class="earn-card">
+                        <div class="earn-icon">🛒</div>
+                        <div class="earn-info">
+                            <h4>Einkauf</h4>
+                            <p>Pro 1€ Bestellwert</p>
+                        </div>
+                        <div class="earn-points">+1 Punkt</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">📧</div>
+                        <div class="earn-info">
+                            <h4>Newsletter-Anmeldung</h4>
+                            <p>Einmalig bei Anmeldung</p>
+                        </div>
+                        <div class="earn-points">+50 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">👤</div>
+                        <div class="earn-info">
+                            <h4>Konto erstellen</h4>
+                            <p>Willkommensbonus</p>
+                        </div>
+                        <div class="earn-points">+50 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">⭐</div>
+                        <div class="earn-info">
+                            <h4>Produktbewertung</h4>
+                            <p>Pro Bewertung</p>
+                        </div>
+                        <div class="earn-points">+25 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">🎂</div>
+                        <div class="earn-info">
+                            <h4>Geburtstag</h4>
+                            <p>Jährlicher Bonus</p>
+                        </div>
+                        <div class="earn-points">+100 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">👥</div>
+                        <div class="earn-info">
+                            <h4>Freund werben</h4>
+                            <p>Pro erfolgreiche Empfehlung</p>
+                        </div>
+                        <div class="earn-points">+100 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">📱</div>
+                        <div class="earn-info">
+                            <h4>Social Share</h4>
+                            <p>Teile auf Instagram/TikTok</p>
+                        </div>
+                        <div class="earn-points">+10 Punkte</div>
+                    </div>
+
+                    <div class="earn-card">
+                        <div class="earn-icon">🎁</div>
+                        <div class="earn-info">
+                            <h4>Erste Bestellung</h4>
+                            <p>Einmaliger Bonus</p>
+                        </div>
+                        <div class="earn-points">+50 Punkte</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Redeem Points -->
+    <section class="section section-alt redeem-section">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 2rem;">
+                <h2 class="reveal">Punkte einlösen</h2>
+                <p class="reveal" style="color: var(--color-muted); max-width: 500px; margin: 0 auto;">Tausche deine gesammelten Punkte gegen exklusive Belohnungen ein</p>
+            </div>
+
+            <div class="redeem-grid" id="redeem-grid">
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">🏷️</div>
+                    <h4>5€ Rabatt</h4>
+                    <p class="points-cost">100 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('discount_5', 100)">Einlösen</button>
+                </div>
+
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">🏷️</div>
+                    <h4>10€ Rabatt</h4>
+                    <p class="points-cost">180 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('discount_10', 180)">Einlösen</button>
+                </div>
+
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">🏷️</div>
+                    <h4>25€ Rabatt</h4>
+                    <p class="points-cost">400 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('discount_25', 400)">Einlösen</button>
+                </div>
+
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">🚚</div>
+                    <h4>Kostenloser Versand</h4>
+                    <p class="points-cost">150 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('free_shipping', 150)">Einlösen</button>
+                </div>
+
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">🎁</div>
+                    <h4>Mystery Geschenk</h4>
+                    <p class="points-cost">300 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('mystery_gift', 300)">Einlösen</button>
+                </div>
+
+                <div class="redeem-card reveal">
+                    <div class="redeem-icon">⚡</div>
+                    <h4>Early Access (30 Tage)</h4>
+                    <p class="points-cost">250 Punkte</p>
+                    <button class="btn-secondary" onclick="redeemReward('early_access', 250)">Einlösen</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq-section">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 2rem;">
+                <h2 class="reveal">Häufige Fragen</h2>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Wie sammle ich Punkte?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Du sammelst automatisch 1 Punkt pro 1€ Bestellwert. Zusätzlich gibt es Bonus-Punkte für Newsletter-Anmeldung, Produktbewertungen, Freunde werben und mehr. Höhere Tier-Stufen erhalten einen Punkte-Multiplikator!</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Verfallen meine Punkte?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Punkte verfallen nach 24 Monaten Inaktivität. Solange du mindestens einmal pro Jahr einkaufst oder Punkte einlöst, bleiben alle Punkte erhalten.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Was ist der Punkte-Multiplikator?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Je höher dein Tier, desto mehr Punkte erhältst du pro Aktion! Mondlicht: 1x, Sternenlicht: 1.25x, Galaxie: 1.5x, Supernova: 2x. Das bedeutet, als Supernova-Mitglied erhältst du doppelt so viele Punkte!</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Was passiert mit meinem Tier bei Retouren?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Bei Retouren werden die entsprechenden Punkte wieder abgezogen. Dein Tier-Status basiert auf deinen Gesamtpunkten. Bei einem Tier-Abstieg behältst du noch 30 Tage die Vorteile des höheren Tiers.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Was ist das VIP-Cabinet?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Das VIP-Cabinet ist ein exklusiver Bereich nur für Supernova-Mitglieder. Hier findest du limitierte Editionen, die nirgendwo anders erhältlich sind, sowie besondere Angebote und Preview-Kollektionen.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Kann ich meine Punkte übertragen?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Punkte sind an dein persönliches Konto gebunden und können nicht übertragen werden. Bei Kontolöschung verfallen alle Punkte unwiderruflich.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section newsletter-section">
+        <div class="container">
+            <div class="newsletter-card reveal">
+                <h2>Starte deine Rewards-Reise</h2>
+                <p>Melde dich jetzt an und erhalte sofort <strong style="color: var(--color-accent);">50 Willkommens-Punkte</strong>!</p>
+                <div style="margin-top: 2rem;">
+                    <a href="index.html#newsletter" class="btn">Newsletter abonnieren</a>
+                    <a href="index.html#kollektion" class="btn-secondary" style="margin-left: 1rem;">Jetzt shoppen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom" style="padding-top: 0; border-top: none;">
+                <p>&copy; 2026 LUNARA. Alle Rechte vorbehalten.</p>
+                <div class="footer-legal">
+                    <a href="impressum 2.html">Impressum</a>
+                    <a href="datenschutz 2.html">Datenschutz</a>
+                    <a href="agb 2.html">AGB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/store.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/rewards-system.js"></script>
+    <script src="js/premium-animations.js"></script>
+
+    <script>
+        function showToast(message, type = 'info') {
+            const container = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || icons.info}</span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('toast-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function toggleFaq(element) {
+            const item = element.closest('.faq-item');
+            item.classList.toggle('open');
+        }
+
+        function redeemReward(type, points) {
+            const success = Rewards.redeemPoints(points, type);
+            if (success) {
+                const code = Rewards.generateDiscountCode(type, points);
+                showToast(`Belohnung eingelöst! Dein Code: ${code}`, 'success');
+            }
+        }
+
+        // Nav toggle
+        document.getElementById('nav-toggle')?.addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('nav-menu').classList.toggle('open');
+        });
+
+        // Cart button
+        document.getElementById('cart-button')?.addEventListener('click', () => cartUI.open());
+
+        // Update UI with rewards data
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = Rewards.getCurrentStatus();
+
+            // Update tier icon based on current tier
+            const tierIcons = {
+                mondlicht: '🌙',
+                sternenlicht: '⭐',
+                galaxie: '🌌',
+                supernova: '💫'
+            };
+
+            const tierColors = {
+                mondlicht: '#c0c0c0',
+                sternenlicht: '#ffd700',
+                galaxie: '#9b59b6',
+                supernova: '#ff6b35'
+            };
+
+            document.querySelectorAll('.your-tier-icon').forEach(el => {
+                el.textContent = tierIcons[status.tier];
+                el.style.setProperty('--tier-color', tierColors[status.tier]);
+            });
+
+            // Disable redeem buttons if not enough points
+            document.querySelectorAll('.redeem-card').forEach(card => {
+                const btn = card.querySelector('button');
+                const pointsCost = parseInt(card.querySelector('.points-cost').textContent);
+                if (status.points < pointsCost) {
+                    card.classList.add('disabled');
+                    btn.disabled = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

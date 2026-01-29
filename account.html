@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Dein LUNARA Konto – verwalte Bestellungen, Punkte und Wunschliste.">
+        <meta name="keywords" content="LUNARA Konto, Bestellungen, Punkte, Wunschliste">
+        <meta property="og:title" content="LUNARA – Mein Konto">
+        <meta property="og:description" content="Logge dich in dein LUNARA Konto ein, um deine Bestellungen und Rewards zu sehen.">
+        <meta property="og:image" content="assets/img/hero-bg.png">
+        <meta property="og:type" content="website">
+    <title>LUNARA – Mein Konto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo"><a href="index.html">LUNARA</a></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><button class="btn-secondary" id="cart-button">🛒 <span class="cart-count">0</span></button></li>
+        </ul>
+    </nav>
+    <section class="section" style="margin-top:80px;">
+        <div class="container">
+            <h2>Mein Konto</h2>
+            <p>Der Kontobereich ist in dieser Demo nur begrenzt verfügbar. Nach dem Login kannst du hier deine Bestellungen, Punkte und Wunschliste sehen.</p>
+            <a href="index.html" class="btn-secondary">Zurück zur Startseite</a>
+        </div>
+    </section>
+    <!-- Cart Drawer and scripts to reuse cartUI -->
+    <div class="cart-overlay"></div>
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h3>Dein Warenkorb</h3>
+            <button class="close-cart">×</button>
+        </div>
+        <div class="cart-content"></div>
+        <div class="cart-footer">
+            <div class="cart-total">Gesamt: <span class="cart-total-amount">€0.00</span></div>
+            <button class="btn" onclick="checkout.proceed()">Zur Kasse</button>
+        </div>
+    </div>
+    <div class="toast-container"></div>
+    <script src="js/store.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/motion.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('cart-button').addEventListener('click', () => {
+            cartUI.open();
+        });
+        auth.init();
+        cartUI.init([]);
+        motion.init();
+    </script>
+</body>
+</html>
